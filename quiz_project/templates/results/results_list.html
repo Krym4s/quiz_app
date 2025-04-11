@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Мои результаты</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Тест</th>
+                <th>Баллы</th>
+                <th>Дата</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td><a href="{% url 'result_detail' result.id %}">{{ result.quiz.title }}</a></td>
+                <td>{{ result.score }}/{{ result.quiz.question_set.count }}</td>
+                <td>{{ result.completed_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

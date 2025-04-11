@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Доступные тесты</h2>
+    <ul class="list-group">
+        {% for quiz in quizzes %}
+        <li class="list-group-item">
+            <a href="{% url 'quiz_detail' quiz.id %}">{{ quiz.title }}</a>
+            <span class="badge bg-secondary">{{ quiz.question_set.count }} вопросов</span>
+        </li>
+        {% endfor %}
+    </ul>
+    {% if user.is_teacher %}
+    <a href="{% url 'quiz_create' %}" class="btn btn-success mt-3">Создать тест</a>
+    {% endif %}
+</div>
+{% endblock %}

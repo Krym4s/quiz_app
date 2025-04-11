@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{% if object %}Редактировать{% else %}Создать{% endif %} вопрос</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            {{ form.text.label_tag }}
+            {{ form.text }}
+            {% if form.text.errors %}
+                <div class="text-danger">{{ form.text.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.image.label_tag }}
+            {{ form.image }}
+            {% if form.image.errors %}
+                <div class="text-danger">{{ form.image.errors }}</div>
+            {% endif %}
+            
+            {% if object and object.image %}
+                <div class="mt-2">
+                    <img src="{{ object.image.url }}" 
+                         alt="Текущее изображение" 
+                         style="max-height: 200px;"
+                         class="img-thumbnail">
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" 
+                               type="checkbox" 
+                               name="image-clear" 
+                               id="image-clear">
+                        <label class="form-check-label" for="image-clear">
+                            Удалить текущее изображение
+                        </label>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">
+            {% if object %}Сохранить{% else %}Создать{% endif %}
+        </button>
+    </form>
+</div>
+{% endblock %}

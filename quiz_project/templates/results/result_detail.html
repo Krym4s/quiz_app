@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Результат теста: {{ result.quiz.title }}</h2>
+    <p>Набрано баллов: {{ result.score }}/{{ result.quiz.question_set.count }}</p>
+    <p>Дата прохождения: {{ result.completed_at }}</p>
+    <p>Затраченное время: {{ result.time_spent }} сек.</p>
+    
+    <h3 class="mt-4">Разбор ответов:</h3>
+    {% for answer in result.studentanswer_set.all %}
+        <div class="card mb-3 {% if answer.is_correct %}border-success{% else %}border-danger{% endif %}">
+            <div class="card-header">
+                Вопрос: {{ answer.question.text }}
+                {% if answer.question.image %}
+                    <img src="{{ answer.question.image.url }}" >
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <p>Ваш ответ: 
+                    {% if answer.question.question_type == "TXT" %}
+                        {{ answer.answer_text }}
+                    {% else %}
+                        {{answer.selected_answer.text}}
+                    {% endif %}</p>
+                <p>Правильный ответ: 
+                    {% if answer.question.question_type == "MC" %}
+                        {% for answer in answer.question.answer_set.all%}
+                            {% if answer.is_correct%}
+                                {{ answer.text}}
+                            {% endif %}
+                        {% endfor%}
+                    {% else %}
+                        {% for answer in answer.question.answer_set.all%}
+                            {% if answer.is_correct %}
+                                {{ answer.text}}
+                            {% endif %}
+                        {% endfor%}
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ quiz.title }}</h2>
+    <p>Время на прохождение: {{ quiz.time_limit }} мин.</p>
+    <p>Количество вопросов: {{ quiz.question_set.count }}</p>
+    
+    {% if user.is_teacher %}
+        <a href="{% url 'quiz_create' %}" class="btn btn-success">Добавить вопрос</a>
+    {% else %}
+        <a href="{% url 'quiz_start' quiz.id %}" class="btn btn-primary">Начать тест</a>
+    {% endif %}
+</div>
+{% endblock %}
