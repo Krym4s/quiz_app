@@ -5,7 +5,7 @@
     <h3>Добавить ответы к вопросу:</h3>
     <p>{{ question.text }}</p>
     {% if question.image %}
-        <img src="{{ question.image.url }}" >
+        <img src="{{ question.image.url }}"  style="max-height: 200px;" >
     {% endif %}
     <form method="post">
         {% csrf_token %}

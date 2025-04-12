@@ -5,13 +5,13 @@
     <h2>{{ quiz.title }}</h2>
     <form method="post" id="quiz-form">
         {% csrf_token %}
-        <input type="hidden" id="time-spent" name="time_spent" value="">
+        <input type="hidden" id="time_spent" name="time_spent" value="">
         {% for question in quiz.question_set.all %}
             <div class="card mb-3">
                 <div class="card-header">
                     Вопрос {{ forloop.counter }}: {{ question.text }}
                     {% if question.image %}
-                        <img src="{{ question.image.url }}" >
+                        <img src="{{ question.image.url }}" style="max-height: 400px;">
                     {% endif %}
                 </div>
                 <div class="card-body">
@@ -82,12 +82,13 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem(storageKey, timeLeft); // save time in a local storage
         
         document.getElementById('quiz-timer').textContent = `Осталось: ${formatTime(timeLeft)}`;
-        document.getElementById('time-spent').value = {{ quiz.time_limit }} * 60 - timeLeft;
+        document.getElementById('time_spent').value = {{ quiz.time_limit }} * 60 - timeLeft;
 
         if (timeLeft <= 0) {
             clearInterval(timer);
             localStorage.removeItem(storageKey); // clear local storage
             alert('Время вышло!');
+            document.getElementById('time_spent').value = {{ quiz.time_limit }} * 60 - timeLeft;
             document.getElementById('quiz-form').submit();
         }
     }, 1000);

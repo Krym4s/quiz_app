@@ -84,9 +84,14 @@ def quiz_start(request, quiz_id):
     quiz = get_object_or_404(Quiz, id=quiz_id)
     
     if request.method == 'POST':
-        messages.success(request, 'Тест отправлен на проверку!')
-        print(request.POST.get('time_spent'))
-        return quiz_submit(request, quiz_id, request.POST.get('time_spent'))
+        for question in quiz.question_set.all():
+            if f'question_{question.id}' not in request.POST:
+                messages.error(request, f"Не ответили на вопрос: {question.text[:50]}...")
+                return redirect('quiz_start', quiz_id=quiz.id)
+       
+        time_spent = request.POST.get('time_spent')
+        print(time_spent)
+        return quiz_submit(request, quiz_id, time_spent)
     
     if 'quiz_start_time' not in request.session:
         request.session['quiz_start_time'] = timezone.now().timestamp()

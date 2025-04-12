@@ -24,7 +24,7 @@ class Quiz(models.Model):
 
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    text = models.TextField()
+    text = models.TextField(default='')
     image = models.ImageField(
         upload_to='questions/images/',
         blank=True,
