@@ -13,7 +13,7 @@
             <div class="card-header">
                 Вопрос: {{ answer.question.text }}
                 {% if answer.question.image %}
-                    <img src="{{ answer.question.image.url }}" >
+                    <img src="{{ answer.question.image.url }}" style="max-height: 200px;" >
                 {% endif %}
             </div>
             <div class="card-body">

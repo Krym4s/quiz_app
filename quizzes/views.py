@@ -119,11 +119,10 @@ def add_questions(request, quiz_id):
     
     if request.method == 'POST':
         question_form = QuestionForm(request.POST, request.FILES)
-        if question_form.is_valid():
-            question = question_form.save(commit=False)
-            question.quiz = quiz
-            question = question_form.save()
-            return redirect('add_answers', question_id=question.id)
+        question = question_form.save(commit=False)
+        question.quiz = quiz
+        question.save()
+        return redirect('add_answers', question_id=question.id)
     else:
         question_form = QuestionForm()
     
@@ -152,27 +151,3 @@ def add_answers(request, question_id):
         'question': question,
         'form': answer_form
     })
-
-def question_create(request):
-    if request.method == 'POST':
-        form = QuestionForm(request.POST, request.FILES)
-        if form.is_valid():
-            question = form.save()
-            return redirect('question_detail', pk=question.pk)
-    else:
-        form = QuestionForm()
-    return render(request, 'questions/question_form.html', {'form': form})
-
-def question_update(request, pk):
-    question = get_object_or_404(Question, pk=pk)
-    if request.method == 'POST':
-        form = QuestionForm(request.POST, request.FILES, instance=question)
-        if form.is_valid():
-            # Обработка удаления изображения
-            if 'image-clear' in request.POST:
-                question.image.delete(save=False)
-            form.save()
-            return redirect('question_detail', pk=question.pk)
-    else:
-        form = QuestionForm(instance=question)
-    return render(request, 'questions/question_form.html', {'form': form, 'object': question})

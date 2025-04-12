@@ -5,10 +5,12 @@
     <h2>Доступные тесты</h2>
     <ul class="list-group">
         {% for quiz in quizzes %}
+        {% if quiz.is_published or quiz.creator.id == user.id%} 
         <li class="list-group-item">
             <a href="{% url 'quiz_detail' quiz.id %}">{{ quiz.title }}</a>
             <span class="badge bg-secondary">{{ quiz.question_set.count }} вопросов</span>
         </li>
+        {% endif %}
         {% endfor %}
     </ul>
     {% if user.is_teacher %}
